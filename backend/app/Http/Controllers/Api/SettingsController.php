@@ -22,13 +22,13 @@ class SettingsController extends Controller
         
         if (!empty($settings['website_logo'])) {
             $logoUrl = Storage::disk('public')->exists($settings['website_logo'])
-                ? Storage::disk('public')->url($settings['website_logo'])
+                ? url(Storage::disk('public')->url($settings['website_logo']))
                 : null;
         }
         
         if (!empty($settings['website_favicon'])) {
             $faviconUrl = Storage::disk('public')->exists($settings['website_favicon'])
-                ? Storage::disk('public')->url($settings['website_favicon'])
+                ? url(Storage::disk('public')->url($settings['website_favicon']))
                 : null;
         }
 

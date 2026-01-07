@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        // CORS configuration for API routes
+        $middleware->api(prepend: [
+            \App\Http\Middleware\HandleCors::class,
+        ]);
+
 		$middleware->alias([
 			'admin' => \App\Http\Middleware\Admin::class,
 		]);

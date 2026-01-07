@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useSettings } from '@/hooks/use-settings';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -16,6 +17,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { settings } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,8 +38,18 @@ export function Navbar() {
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-display font-bold gradient-text">
-            NEXUS
+          <Link to="/" className="flex items-center gap-3">
+            {settings.website_logo ? (
+              <img 
+                src={settings.website_logo} 
+                alt={settings.website_title}
+                className="h-8 w-auto"
+              />
+            ) : (
+              <span className="text-2xl font-display font-bold gradient-text">
+                {settings.website_title}
+              </span>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
