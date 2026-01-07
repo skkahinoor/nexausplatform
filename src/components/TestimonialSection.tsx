@@ -4,6 +4,7 @@ import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { useSettings } from '@/hooks/use-settings';
 
 // 3D Background Element for Testimonials
 function Testimonial3DBackground() {
@@ -52,7 +53,8 @@ function Testimonial3DBackground() {
   );
 }
 
-const testimonials = [
+// Default testimonials fallback
+const defaultTestimonials = [
   {
     id: 1,
     name: 'Sarah Chen',
@@ -95,11 +97,22 @@ const testimonials = [
   },
 ];
 
-function TestimonialCard({ testimonial, index, isActive }: { 
-  testimonial: typeof testimonials[0]; 
+interface TestimonialCardProps {
+  testimonial: {
+    id: number;
+    name: string;
+    role: string;
+    company?: string | null;
+    image?: string | null;
+    rating: number;
+    text: string;
+    highlight?: string | null;
+  };
   index: number;
   isActive: boolean;
-}) {
+}
+
+function TestimonialCard({ testimonial, index, isActive }: TestimonialCardProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -140,20 +153,28 @@ function TestimonialCard({ testimonial, index, isActive }: {
       </p>
 
       {/* Highlight */}
-      <div className="mb-6">
-        <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-          {testimonial.highlight}
-        </span>
-      </div>
+      {testimonial.highlight && (
+        <div className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+            {testimonial.highlight}
+          </span>
+        </div>
+      )}
 
       {/* Author Info */}
       <div className="flex items-center gap-4 pt-6 border-t border-border/50">
         <div className="relative">
-          <img
-            src={testimonial.image}
-            alt={testimonial.name}
-            className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
-          />
+          {testimonial.image ? (
+            <img
+              src={testimonial.image}
+              alt={testimonial.name}
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold text-lg ring-2 ring-primary/20">
+              {testimonial.name.charAt(0)}
+            </div>
+          )}
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 animate-pulse" />
         </div>
         <div>
@@ -172,7 +193,18 @@ function TestimonialCard({ testimonial, index, isActive }: {
 export function TestimonialSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { settings } = useSettings();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // Use API testimonials if available, otherwise use defaults
+  const testimonials = settings.testimonials && settings.testimonials.length > 0
+    ? settings.testimonials
+    : defaultTestimonials;
+
+  // Don't render if no testimonials
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
 
   const nextTestimonial = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
@@ -185,13 +217,13 @@ export function TestimonialSection() {
   // Auto-rotate testimonials on mobile only
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    if (!isMobile) return;
+    if (!isMobile || testimonials.length === 0) return;
     
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <section id="testimonials" className="py-32 relative overflow-hidden">

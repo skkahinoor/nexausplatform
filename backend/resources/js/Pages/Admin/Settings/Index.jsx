@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -101,6 +101,16 @@ export default function SettingsIndex({ settings, flash }) {
                             >
                                 Social Media
                             </button>
+                            <Link
+                                href={route('admin.testimonials.index')}
+                                className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium ${
+                                    route().current('admin.testimonials.index')
+                                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                                }`}
+                            >
+                                Testimonials
+                            </Link>
                         </nav>
                     </div>
 

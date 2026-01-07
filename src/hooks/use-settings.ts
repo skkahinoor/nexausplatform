@@ -27,6 +27,7 @@ export const useSettings = () => {
       social_twitter: '',
       social_instagram: '',
       social_linkedin: '',
+      testimonials: [],
     },
     isLoading,
     error,

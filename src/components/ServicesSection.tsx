@@ -2,39 +2,46 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Palette, Code, Smartphone, Megaphone, Video, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const services = [
   {
+    id: 'brand-identity',
     icon: Palette,
     title: 'Brand Identity',
     description: 'Create memorable brand experiences with strategic design that resonates with your audience.',
     color: 'from-primary to-blue-500',
   },
   {
+    id: 'web-development',
     icon: Code,
     title: 'Web Development',
     description: 'Build blazing-fast, responsive websites with cutting-edge technologies and flawless UX.',
     color: 'from-purple-500 to-accent',
   },
   {
+    id: 'mobile-apps',
     icon: Smartphone,
     title: 'Mobile Apps',
     description: 'Native and cross-platform applications that deliver seamless user experiences.',
     color: 'from-primary to-cyan-400',
   },
   {
+    id: '3d-motion',
     icon: Layers,
     title: '3D & Motion',
     description: 'Immersive 3D experiences and motion graphics that bring your vision to life.',
     color: 'from-accent to-pink-500',
   },
   {
+    id: 'digital-marketing',
     icon: Megaphone,
     title: 'Digital Marketing',
     description: 'Data-driven strategies that amplify your reach and drive measurable results.',
     color: 'from-green-400 to-primary',
   },
   {
+    id: 'video-production',
     icon: Video,
     title: 'Video Production',
     description: 'Cinematic storytelling that captures attention and communicates your message.',
@@ -54,24 +61,26 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group relative"
     >
-      <div className="glass-card p-8 h-full hover:bg-white/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
-        {/* Icon */}
-        <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.color} mb-6`}>
-          <service.icon className="w-6 h-6 text-white" />
-        </div>
+      <Link to={`/services/${service.id}`}>
+        <div className="glass-card p-8 h-full hover:bg-white/5 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl cursor-pointer">
+          {/* Icon */}
+          <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${service.color} mb-6`}>
+            <service.icon className="w-6 h-6 text-white" />
+          </div>
 
-        <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
-        <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+          <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
+          <p className="text-muted-foreground leading-relaxed">{service.description}</p>
 
-        {/* Hover Arrow */}
-        <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center`}>
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+          {/* Hover Arrow */}
+          <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center`}>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }

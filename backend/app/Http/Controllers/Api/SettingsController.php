@@ -22,15 +22,39 @@ class SettingsController extends Controller
         
         if (!empty($settings['website_logo'])) {
             $logoUrl = Storage::disk('public')->exists($settings['website_logo'])
-                ? url(Storage::disk('public')->url($settings['website_logo']))
+                ? asset('storage/' . $settings['website_logo'])
                 : null;
         }
         
         if (!empty($settings['website_favicon'])) {
             $faviconUrl = Storage::disk('public')->exists($settings['website_favicon'])
-                ? url(Storage::disk('public')->url($settings['website_favicon']))
+                ? asset('storage/' . $settings['website_favicon'])
                 : null;
         }
+
+        // Get testimonials
+        $testimonials = \App\Models\Testimonial::active()
+            ->ordered()
+            ->get()
+            ->map(function ($testimonial) {
+                $imageUrl = null;
+                if ($testimonial->image) {
+                    $imageUrl = Storage::disk('public')->exists($testimonial->image)
+                        ? asset('storage/' . $testimonial->image)
+                        : null;
+                }
+                
+                return [
+                    'id' => $testimonial->id,
+                    'name' => $testimonial->name,
+                    'role' => $testimonial->role,
+                    'company' => $testimonial->company,
+                    'text' => $testimonial->text,
+                    'highlight' => $testimonial->highlight,
+                    'rating' => $testimonial->rating,
+                    'image' => $imageUrl,
+                ];
+            });
 
         return response()->json([
             'success' => true,
@@ -45,6 +69,7 @@ class SettingsController extends Controller
                 'social_twitter' => $settings['social_twitter'] ?? '',
                 'social_instagram' => $settings['social_instagram'] ?? '',
                 'social_linkedin' => $settings['social_linkedin'] ?? '',
+                'testimonials' => $testimonials,
             ],
         ]);
     }

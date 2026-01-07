@@ -29,6 +29,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/settings/frontend', [\App\Http\Controllers\Admin\SettingsController::class, 'updateFrontend'])->name('settings.frontend');
     Route::post('/settings/contact', [\App\Http\Controllers\Admin\SettingsController::class, 'updateContact'])->name('settings.contact');
     Route::post('/settings/social', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSocial'])->name('settings.social');
+    
+    // Testimonials routes
+    Route::get('/testimonials', [\App\Http\Controllers\Admin\TestimonialController::class, 'index'])->name('testimonials.index');
+    Route::post('/testimonials', [\App\Http\Controllers\Admin\TestimonialController::class, 'store'])->name('testimonials.store');
+    Route::put('/testimonials/{testimonial}', [\App\Http\Controllers\Admin\TestimonialController::class, 'update'])->name('testimonials.update');
+    Route::delete('/testimonials/{testimonial}', [\App\Http\Controllers\Admin\TestimonialController::class, 'destroy'])->name('testimonials.destroy');
 });
 
 require __DIR__.'/auth.php';

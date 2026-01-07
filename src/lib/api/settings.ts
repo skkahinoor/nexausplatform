@@ -1,3 +1,14 @@
+export interface Testimonial {
+  id: number;
+  name: string;
+  role: string;
+  company: string | null;
+  text: string;
+  highlight: string | null;
+  rating: number;
+  image: string | null;
+}
+
 export interface Settings {
   website_title: string;
   website_description: string;
@@ -9,6 +20,7 @@ export interface Settings {
   social_twitter: string;
   social_instagram: string;
   social_linkedin: string;
+  testimonials: Testimonial[];
 }
 
 export interface SettingsResponse {
@@ -53,6 +65,7 @@ export const fetchSettings = async (): Promise<Settings> => {
       social_twitter: '',
       social_instagram: '',
       social_linkedin: '',
+      testimonials: [],
     };
   }
 };
