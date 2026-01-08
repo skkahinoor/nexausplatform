@@ -55,7 +55,7 @@ export const fetchSettings = async (): Promise<Settings> => {
     console.error('Error fetching settings:', error);
     // Return default settings on error
     return {
-      website_title: 'NEXUS',
+      website_title: '',
       website_description: "We're a digital agency crafting exceptional experiences that transform brands and drive results.",
       website_logo: null,
       website_favicon: null,
